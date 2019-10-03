@@ -13,7 +13,11 @@ Assembly based metagenomics represents a complex analysis pathway:
 
 4. [MAG annotation](#MAGs)
 
-Login into your VM
+Login into your VM:
+
+```
+ssh -Y ubuntu@137.205.69.xxx
+```
 
 We are now going to perform a basic assembly based metagenomics analysis of these same samples. 
 This will involve a collection of different software programs:
@@ -42,7 +46,6 @@ This will involve a collection of different software programs:
 
 Start off by moving into the Projects directory and creating a new directory called InfantGut:
 
-creating a new working directory and linking in the infant gut samples:
 
 <details><summary>Reveal commands</summary>
 <p>
@@ -56,12 +59,52 @@ mkdir InfantGut
 </p>
 </details>
 
-
+Now move into the InfantGut directory and link in the Infant Gut reads:
 ```
+cd InfantGut
 ln -s ~/Data/InfantGut/ReadsSub .
 ```
 
-First let's try assembling a single sample with default parameters:
+These are subsampled from the [paper](https://www.ncbi.nlm.nih.gov/pubmed/22936250).
+
+
+First let's try assembling a single sample with default parameters using megahit, the 
+forward and reverse reads for sample1 are 'ReadsSub/sample1_R1.fastq' and 'ReadsSub/sample1_R2.fastq'.
+
+It is useful to look at the format of a fastq file, what does each of the 4 lines in an entry correspond to:
+
+
+<details><summary>Reveal commands</summary>
+<p>
+
+
+```
+more ReadsSub/sample1_R1.fastq
+```
+
+</p>
+</details>
+
+
+
+Can you determine the number of reads in each file?
+
+<details><summary>Reveal commands</summary>
+<p>
+
+
+```
+echo $(cat ReadsSub/sample1_R1.fastq |wc -l)/4|bc
+```
+
+</p>
+</details>
+
+
+
+
+
+
 ```
 megahit -1 ReadsSub/sample1_R1.fastq -2 ReadsSub/sample1_R2.fastq -o Assembly1
 ```
