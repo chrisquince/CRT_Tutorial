@@ -71,6 +71,8 @@ These are subsampled from the [paper](https://www.ncbi.nlm.nih.gov/pubmed/229362
 First let's try assembling a single sample with default parameters using megahit, the 
 forward and reverse reads for sample1 are 'ReadsSub/sample1_R1.fastq' and 'ReadsSub/sample1_R2.fastq'.
 
+What are forward and reverse reads?
+
 It is useful to look at the format of a fastq file, what does each of the 4 lines in an entry correspond to:
 
 
@@ -86,10 +88,7 @@ more ReadsSub/sample1_R1.fastq
 </details>
 
 
-
-Can you determine the number of reads in each file?
-
-<details><summary>Reveal commands</summary>
+<details><summary>Can you determine the number of reads in each file?</summary>
 <p>
 
 
@@ -101,13 +100,21 @@ echo $(cat ReadsSub/sample1_R1.fastq |wc -l)/4|bc
 </details>
 
 
+Now we will try a single sample assembly with megahit. Can you assemble the forward and reverse reads from sample 1?
 
 
-
+<details><summary>Reveal commands</summary>
+<p>
 
 ```
 megahit -1 ReadsSub/sample1_R1.fastq -2 ReadsSub/sample1_R2.fastq -o Assembly1
 ```
+
+</p>
+</details>
+
+
+I have provided a script to evaluate these assembly results:
 
 ```
 contig-stats.pl < Assembly1/final.contigs.fa
@@ -121,10 +128,17 @@ spades.py --only-assembler --meta -1 ReadsSub/sample1_R1.fastq -2 ReadsSub/sampl
 
 Which is better?
 
+
+<details><summary>Reveal commands</summary>
+<p>
+
 ```
 contig-stats.pl < AssemblyS/contigs.fasta 
 sequence #: 4783	total length: 7931965	max length: 542671	N50: 18116	N90: 449
 ```
+</p>
+</details>
+
 
 ## Co-assembly
 
