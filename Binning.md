@@ -118,6 +118,7 @@ I have provided a script to evaluate these assembly results:
 contig-stats.pl < Assembly1/final.contigs.fa
 ```
 
+What is contig N50?
 
 Compare to a spades assembly without noise removal:
 ```
@@ -158,29 +159,12 @@ cp -r ~/Prerun/Assembly .
 <p>
 
 ```
-contig-stats.pl < Assembly/contigs.fasta 
-sequence #: 4783	total length: 7931965	max length: 542671	N50: 18116	N90: 449
+contig-stats.pl < Assembly/final.contigs.fasta 
 ```
 </p>
 </details>
 
-
-
-
-```
-nohup megahit -1 $(<R1.csv) -2 $(<R2.csv) -t 12 -o Assembly > megahit.out&
-```
-
-```
-contig-stats.pl < Assembly/final.contigs.fa
-```
-
-Should see results like:
-```
-sequence #: 9920	total length: 16683496	max length: 628146	N50: 8525	N90: 447
-```
-
-Discussion point what is N50?
+Which assembly is bigger?
 
 
 
