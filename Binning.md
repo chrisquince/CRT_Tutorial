@@ -84,7 +84,7 @@ more ReadsSub/sample1_R1.fastq
 </p>
 </details>
 
-What does each of the 4 lines in an entry correspond to:
+What does each of the 4 lines in an entry correspond to?
 
 <details><summary>Can you determine the number of reads in each file?</summary>
 <p>
@@ -138,14 +138,34 @@ sequence #: 4783	total length: 7931965	max length: 542671	N50: 18116	N90: 449
 
 ## Co-assembly
 
-We will now perform a co-assembly of all these samples using 
+We could perform a co-assembly of all these samples using 
 megahit:
 
 ```
-cd ~/Projets/InfantGut
+cd ~/Projects/InfantGut
 ls ReadsSub/*R1.fastq | tr "\n" "," | sed 's/,$//' > R1.csv
 ls ReadsSub/*R2.fastq | tr "\n" "," | sed 's/,$//' > R2.csv
+megahit -1 $(<R1.csv) -2 $(<R2.csv) -t 12 -o Assembly
 ```
+
+That would take 20 minutes so please copy in the directory instead:
+
+```
+cp -r ~/Prerun/Assembly .
+```
+
+<details><summary>What is the N50 of coassembled contigs</summary>
+<p>
+
+```
+contig-stats.pl < Assembly/contigs.fasta 
+sequence #: 4783	total length: 7931965	max length: 542671	N50: 18116	N90: 449
+```
+</p>
+</details>
+
+
+
 
 ```
 nohup megahit -1 $(<R1.csv) -2 $(<R2.csv) -t 12 -o Assembly > megahit.out&
