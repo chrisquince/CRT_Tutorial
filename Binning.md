@@ -73,10 +73,7 @@ forward and reverse reads for sample1 are 'ReadsSub/sample1_R1.fastq' and 'Reads
 
 What are forward and reverse reads?
 
-It is useful to look at the format of a fastq file, what does each of the 4 lines in an entry correspond to:
-
-
-<details><summary>Reveal commands</summary>
+<details><summary>It is useful to look at the format of a fastq file</summary>
 <p>
 
 
@@ -87,6 +84,7 @@ more ReadsSub/sample1_R1.fastq
 </p>
 </details>
 
+What does each of the 4 lines in an entry correspond to:
 
 <details><summary>Can you determine the number of reads in each file?</summary>
 <p>
@@ -103,7 +101,7 @@ echo $(cat ReadsSub/sample1_R1.fastq |wc -l)/4|bc
 Now we will try a single sample assembly with megahit. Can you assemble the forward and reverse reads from sample 1?
 
 
-<details><summary>Reveal commands</summary>
+<details><summary> Can you assemble the forward and reverse reads from sample 1? </summary>
 <p>
 
 ```
