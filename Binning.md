@@ -124,10 +124,8 @@ Compare to a spades assembly without noise removal:
 spades.py --only-assembler --meta -1 ReadsSub/sample1_R1.fastq -2 ReadsSub/sample1_R2.fastq -o AssemblyS -t 12 -k 23,55,77
 ```
 
-Which is better?
 
-
-<details><summary>Reveal commands</summary>
+<details><summary>Which is better?</summary>
 <p>
 
 ```
