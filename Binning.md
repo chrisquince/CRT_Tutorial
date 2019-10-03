@@ -40,9 +40,25 @@ This will involve a collection of different software programs:
 
 ## Assembly
 
-Start off by creating a new working directory and linking in the infant gut samples:
+Start off by moving into the Projects directory and creating a new directory called InfantGut:
+
+creating a new working directory and linking in the infant gut samples:
+
+<details><summary>Reveal commands</summary>
+<p>
+
+
 ```
-cd ~/Projects/InfantGut/
+cd ~/Projects
+mkdir InfantGut
+```
+
+</p>
+</details>
+
+
+```
+ln -s ~/Data/InfantGut/ReadsSub .
 ```
 
 First let's try assembling a single sample with default parameters:
