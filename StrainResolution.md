@@ -25,7 +25,7 @@ while read -r cluster
 do
     echo $cluster
     $DESMAN/scripts/SelectContigsPos.pl scgs.txt < Split/${cluster}/${cluster}.cog > Split/${cluster}/${cluster}_core.cogs
-done < Split/Cluster75.txt
+done < Split/Comp50.txt
 ```
 
 The first step in pre-processing for DESMAN would be to split up the bam files by each cluster in turn:
@@ -36,14 +36,7 @@ python ~/bin/Lengths.py -i final_contigs_gt1000_c10K.fa > final_contigs_gt1000_c
 cd ..
 ```
 
-We will run DESMAN on two complete clusters with more than 50fold coverage. Find these with the following simple script:
-```
-python3 ~/bin/CompleteClustersCov.py Concoct/clustering_gt1000_scg.tsv Concoct/clustering_gt1000_covR.csv > Split/Comp50.txt
-```
-
-What species are these clusters likely from?
-
-The split mapping files:
+Then split mapping files:
 ```
 mkdir SplitBam
 
