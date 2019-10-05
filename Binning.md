@@ -494,7 +494,7 @@ checkm lineage_wf -t 8 -x fa Cluster14 Cluster14_cm
 ```
 <a name="MAGs"/>
 
-Should something like:
+Should give something like:
 ```
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Bin Id             Marker lineage         # genomes   # markers   # marker sets   0    1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity  
@@ -506,19 +506,24 @@ Should something like:
 
 ## Taxonomic Classification of Contigs
 
+
+We will annotate contigs using a kmer based LCA algorithm Kraken:
 ```
 cd ~/Projects/InfantGut/Annotate
 kraken --db ~/Databases/minikraken_20141208/ --threads 8 --preload --output final_contigs_gt1000_c10K.krak final_contigs_gt1000_c10K.fa
 ```
 
+To generate a report file:
 ```
 kraken-report --db ~/Databases/minikraken_20141208/ final_contigs_gt1000_c10K.krak 
 ```
 
+Or in a better format:
 ```
 kraken-translate --mpa-format --db ~/Databases/minikraken_20141208/ final_contigs_gt1000_c10K.krak > final_contigs_gt1000_c10K.krak.mpi.tran
 ```
 
+Now we will com
 ```
 cut -f2 final_contigs_gt1000_c10K.krak.mpi.tran | cut -d"|" -f7 > SpeciesAss.txt
 cut -f1 final_contigs_gt1000_c10K.krak.mpi.tran > Ids.txt
