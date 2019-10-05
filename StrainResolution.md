@@ -230,18 +230,18 @@ We can turn these into actual sequences with the following commands:
 
     mkdir SCG_Fasta_3_0
     
-    python $DESMAN/scripts/GetVariantsCore.py ../../Annotate/final_contigs_gt1000_c10K.fa ../..//Split/Cluster18/Cluster18_core.cogs Cluster18_3_0/Filtered_Tau_star.csv coregenes.txt -o SCG_Fasta_3_0/
+    python3 $DESMAN/scripts/GetVariantsCore.py ../../Annotate/final_contigs_gt1000_c10K.fa ../..//Split/Cluster18/Cluster18_core.cogs Cluster18_3_0/Filtered_Tau_star.csv coregenes.txt -o SCG_Fasta_3_0/
 ```
 
 This generates one fasta sequence file for each gene with the two strains in:
 
 ```bash
-ls SCG_Fasta_3_3
+ls SCG_Fasta_3_0
 ```
 
 
 ```bash
-python $DESMAN/scripts/validateSNP2.py Cluster18_3_3/Filtered_Tau_star.csv Cluster18_3_3/Filtered_Tau_star.csv
+python3 $DESMAN/scripts/validateSNP2.py Cluster18_3_0/Filtered_Tau_star.csv Cluster18_3_0/Filtered_Tau_star.csv
 ``` 
 
 
@@ -260,19 +260,19 @@ Now look at time series of strain abundance:
 
 ```
 cp ~/repos/PenrynTutorial/TimeStrain.R .
-Rscript TimeStrain.R -g Cluster18_3_3/Gamma_starR.csv -m ~/Data/InfantGut/sharon_mappingR.txt 
+Rscript TimeStrain.R -g Cluster18_3_0/Gamma_starR.csv -m ~/Data/InfantGut/sharon_mappingR.txt 
 ```
 
 ![Strain time series](./Figures/StrainSeries.png)
 
-Then for Cluster20
+Then for Cluster14
 ```
 cd ..
-cd Cluster20_scg
+cd Cluster14_scg
 
-varFile='Cluster20_scgsel_var.csv'
+varFile='Cluster14_scgsel_var.csv'
 
-eFile='Cluster20_scgtran_df.csv'
+eFile='Cluster14_scgtran_df.csv'
     
 for g in 1 2 3 4  
 do
@@ -280,7 +280,7 @@ do
     for r in 0 1 2 3 4
     do
 	    echo $r
-        (desman $varFile -e $eFile -o Cluster20_${g}_${r} -g $g -s $r -m 1.0 -i 100)& 
+        (desman $varFile -e $eFile -o Cluster14_${g}_${r} -g $g -s $r -m 1.0 -i 100)& 
     done
     wait
 done
@@ -323,7 +323,7 @@ python3 $DESMAN/scripts/CalcGeneCov.py Cluster18.freq > Cluster18_gene_cov.csv
 ```
 
 ```
-cut -d"," -f5 ../Split/Cluster7/Cluster18_core.cogs > Cluster18_core_genes.txt
+cut -d"," -f5 ../Split/Cluster18/Cluster18_core.cogs > Cluster18_core_genes.txt
 ```
 
 Calculate coverage on core genes:
@@ -335,16 +335,16 @@ python3 $DESMAN/scripts/CalcDelta.py Cluster18_gene_cov.csv Cluster18_core_genes
 Now lets link the best run from DESMAN for convenience:
 
 ```
-ln -s ../SCG_Analysis/Cluster18_scg/Cluster18_3_3 .
+ln -s ../SCG_Analysis/Cluster18_scg/Cluster18_3_0 .
 ```
 
 and finally:
 
 ```
-python3 $DESMAN/desman/GeneAssign.py Cluster18_coremean_sd_df.csv Cluster18_3_3/Gamma_star.csv Cluster18_gene_cov.csv Cluster18_3_3/Eta_star.csv -m 20 -v Cluster18sel_var.csv -o Cluster18 --assign_tau
+python3 $DESMAN/desman/GeneAssign.py Cluster18_coremean_sd_df.csv Cluster18_3_0/Gamma_star.csv Cluster18_gene_cov.csv Cluster18_3_0/Eta_star.csv -m 20 -v Cluster18sel_var.csv -o Cluster18 --assign_tau
 ```
 
 And look at gene and SNP divergence:
 ```
-python ~/repos/PenrynTutorial/IdentEtaGamma.py Cluster18 Cluster7etaS_df.csv Cluster18_3_3/Selected_variants.csv Cluster18_3_3/Filtered_Tau_starR.csv Cluster18_3_3/Gamma_starR.csv
+python ~/repos/PenrynTutorial/IdentEtaGamma.py Cluster18 Cluster7etaS_df.csv Cluster18_3_0/Selected_variants.csv Cluster18_3_0/Filtered_Tau_starR.csv Cluster18_3_0/Gamma_starR.csv
 ```
