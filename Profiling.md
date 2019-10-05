@@ -7,48 +7,11 @@
 On Mac Os X start a terminal and use ssh command. For windows install an ssh client e.g. [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
 Login to server:
-
-```
-ssh -X ubuntu@xxx.xxx.xxx.xxx
-
-cartnet1: 137.205.69.84
-cartnet2: 137.205.69.220
-cartnet3: 137.205.69.214
-cartnet4: 137.205.69.131
-cartnet5: 137.205.69.42
-cartnet6: 137.205.69.164
-cartnet7: 137.205.69.135
-cartnet8: 137.205.69.142
-cartnet9: 137.205.69.144
-cartnet10: 137.205.69.68
-cartnet11: 137.205.69.218
-cartnet12: 137.205.69.107
-```
-
 We will start by creating a new sub-directory in Projects:
 
 Move into Projects with the `cd` change directory command:
 ```
-cd Projects
-```
-
-Create a new directory for our analysis with `mkdir`:
-```
-mkdir InfantGut
-```
-
-Now move into the directory InfantGut (command not supplied) ...
-
-We are going to process a subset of the classic Sharon et al. (2011) Infant Gut data set:
-```
-ls ~/Data/InfantGut/ReadsSub
-```
-
-How many reads are in each sample and how many samples are there?
-
-Lets link `ln` in the Data directory:
-```
-ln -s ~/Data/InfantGut/ReadsSub .
+cd Projects/InfantGut
 ```
 
 ## Taxonomic profiling
