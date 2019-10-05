@@ -523,7 +523,7 @@ Or in a better format:
 kraken-translate --mpa-format --db ~/Databases/minikraken_20141208/ final_contigs_gt1000_c10K.krak > final_contigs_gt1000_c10K.krak.mpi.tran
 ```
 
-Now we will com
+Now we will compare the cluster assignments of contigs to the Kraken species assignments:
 ```
 cut -f2 final_contigs_gt1000_c10K.krak.mpi.tran | cut -d"|" -f7 > SpeciesAss.txt
 cut -f1 final_contigs_gt1000_c10K.krak.mpi.tran > Ids.txt
