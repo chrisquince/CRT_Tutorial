@@ -108,7 +108,7 @@ done < Split/Comp50.txt
 
 The directory contains 2 .freq files one for each cluster. If we look at one:
 ```bash
-head -n 10 Variants/Cluster7_scg.freq 
+head -n 10 Variants/Cluster14_scg.freq 
 ```
 We see it comprises a header, plus one line for each core gene position, giving base frequencies in the order A,C,G,T. This is the input required by DESMAN.
 
@@ -150,15 +150,15 @@ cd SCG_Analysis
 wc */*sel_var.csv
 ```
 
-We can also go into the Cluster 7 directory and look at the output files:
+We can also go into the Cluster 14 directory and look at the output files:
 ```bash
-cd Cluster7_scg
-more Cluster7_scgsel_var.csv 
+cd Cluster14_scg
+more Cluster14_scgsel_var.csv 
 ```
 
 The other important file is:
 ```bash
-more Cluster7_scgtran_df.csv
+more Cluster14_scgtran_df.csv
 ```
 
 This is an estimate of base error rates which is used as a starting point for the haplotype inference.
@@ -166,15 +166,14 @@ This is an estimate of base error rates which is used as a starting point for th
 
 ### Inferring haplotypes
 
-So accounting for the header line we observe 214 and 9 variants in Clusters 7 and 20 respectively. 
-For Cluster 7 then can we attempt to resolve haplotypes. Using the desman executable:
+So accounting for the header line we observe 9 and 214 variants in Clusters 14 and 18 respectively. For Cluster 18 then can we attempt to resolve haplotypes. Using the desman executable:
 
 ```
-cd Cluster7_scg
+cd Cluster18_scg
 
-varFile='Cluster7_scgsel_var.csv'
+varFile='Cluster18_scgsel_var.csv'
 
-eFile='Cluster7_scgtran_df.csv'
+eFile='Cluster18_scgtran_df.csv'
     
 for g in 1 2 3 4  
 do
