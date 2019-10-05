@@ -181,7 +181,7 @@ do
     for r in 0 1 2 3 4
     do
 	    echo $r
-        (desman $varFile -e $eFile -o Cluster7_${g}_${r} -g $g -s $r -m 1.0 -i 100)& 
+        (desman $varFile -e $eFile -o Cluster18_${g}_${r} -g $g -s $r -m 1.0 -i 100)& 
     done
     wait
 done
@@ -203,12 +203,12 @@ $DESMAN/scripts/PlotDev.R -l Dev.csv -o Dev.pdf
 There are two or possibly three haplotypes. We can also run the heuristic to determine haplotype number:
 
 ```bash
-python $DESMAN/scripts/resolvenhap.py Cluster7
+python $DESMAN/scripts/resolvenhap.py Cluster18
 ```
 
 This should output:
 ```
-3,3,3,0.0288161993769,Cluster7_3_3/Filtered_Tau_star.csv
+3,3,0,0.0284267912773,Cluster18_3_0/Filtered_Tau_star.csv
 ```
 
 This has the format:
@@ -218,7 +218,7 @@ No of haplotypes in best fit, No. of good haplotypes in best fit, Index of best 
 
 Have a look at the prediction file:
 ```
-more Cluster7_3_3/Filtered_Tau_star.csv
+more Cluster18_3_0/Filtered_Tau_star.csv
 ```
 
 The position encoding is ACGT so what are the base predictions at each variant position? 
@@ -226,11 +226,11 @@ We can turn these into actual sequences with the following commands:
 
 ```bash
 
-    cut -d"," -f 1 < Cluster7_scgsel_var.csv | sort | uniq | sed '1d' > coregenes.txt
+    cut -d"," -f 1 < Cluster18_scgsel_var.csv | sort | uniq | sed '1d' > coregenes.txt
 
-    mkdir SCG_Fasta_3_3
+    mkdir SCG_Fasta_3_0
     
-    python $DESMAN/scripts/GetVariantsCore.py ../../Annotate/final_contigs_gt1000_c10K.fa ../..//Split/Cluster7/Cluster7_core.cogs Cluster7_3_3/Filtered_Tau_star.csv coregenes.txt -o SCG_Fasta_3_3/
+    python $DESMAN/scripts/GetVariantsCore.py ../../Annotate/final_contigs_gt1000_c10K.fa ../..//Split/Cluster18/Cluster18_core.cogs Cluster18_3_0/Filtered_Tau_star.csv coregenes.txt -o SCG_Fasta_3_0/
 ```
 
 This generates one fasta sequence file for each gene with the two strains in:
@@ -241,7 +241,7 @@ ls SCG_Fasta_3_3
 
 
 ```bash
-python $DESMAN/scripts/validateSNP2.py Cluster7_3_3/Filtered_Tau_star.csv Cluster7_3_3/Filtered_Tau_star.csv
+python $DESMAN/scripts/validateSNP2.py Cluster18_3_3/Filtered_Tau_star.csv Cluster18_3_3/Filtered_Tau_star.csv
 ``` 
 
 
@@ -260,7 +260,7 @@ Now look at time series of strain abundance:
 
 ```
 cp ~/repos/PenrynTutorial/TimeStrain.R .
-Rscript TimeStrain.R -g Cluster7_3_3/Gamma_starR.csv -m ~/Data/InfantGut/sharon_mappingR.txt 
+Rscript TimeStrain.R -g Cluster18_3_3/Gamma_starR.csv -m ~/Data/InfantGut/sharon_mappingR.txt 
 ```
 
 ![Strain time series](./Figures/StrainSeries.png)
@@ -303,7 +303,7 @@ mkdir AllFreq
 Then we get frequencies but now for all genes:
 
 ```
-python3 $DESMAN/scripts/ExtractCountFreqGenes.py -g Split/Cluster7/Cluster7.genes ./SplitBam/Cluster7/ReadcountFilter --output_file AllFreq/Cluster7.freq
+python3 $DESMAN/scripts/ExtractCountFreqGenes.py -g Split/Cluster18/Cluster18.genes ./SplitBam/Cluster18/ReadcountFilter --output_file AllFreq/Cluster18.freq
 
 ```
 
@@ -311,7 +311,7 @@ and find variants on those genes:
 
 ```
 cd AllFreq
-Variant_Filter.py Cluster7.freq -o Cluster7
+Variant_Filter.py Cluster18.freq -o Cluster18
 ```
 
 How many variants do we find on the accessory genome?
@@ -319,32 +319,32 @@ How many variants do we find on the accessory genome?
 We also need gene coverages these we compute from the frequencies:
 
 ```
-python3 $DESMAN/scripts/CalcGeneCov.py Cluster7.freq > Cluster7_gene_cov.csv
+python3 $DESMAN/scripts/CalcGeneCov.py Cluster18.freq > Cluster18_gene_cov.csv
 ```
 
 ```
-cut -d"," -f5 ../Split/Cluster7/Cluster7_core.cogs > Cluster7_core_genes.txt
+cut -d"," -f5 ../Split/Cluster7/Cluster18_core.cogs > Cluster18_core_genes.txt
 ```
 
 Calculate coverage on core genes:
 
 ```
-python3 $DESMAN/scripts/CalcDelta.py Cluster7_gene_cov.csv Cluster7_core_genes.txt Cluster7_core
+python3 $DESMAN/scripts/CalcDelta.py Cluster18_gene_cov.csv Cluster18_core_genes.txt Cluster18_core
 ```
 
 Now lets link the best run from DESMAN for convenience:
 
 ```
-ln -s ../SCG_Analysis/Cluster7_scg/Cluster7_3_3 .
+ln -s ../SCG_Analysis/Cluster18_scg/Cluster18_3_3 .
 ```
 
 and finally:
 
 ```
-python3 $DESMAN/desman/GeneAssign.py Cluster7_coremean_sd_df.csv Cluster7_3_3/Gamma_star.csv Cluster7_gene_cov.csv Cluster7_3_3/Eta_star.csv -m 20 -v Cluster7sel_var.csv -o Cluster7 --assign_tau
+python3 $DESMAN/desman/GeneAssign.py Cluster18_coremean_sd_df.csv Cluster18_3_3/Gamma_star.csv Cluster18_gene_cov.csv Cluster18_3_3/Eta_star.csv -m 20 -v Cluster18sel_var.csv -o Cluster18 --assign_tau
 ```
 
 And look at gene and SNP divergence:
 ```
-python ~/repos/PenrynTutorial/IdentEtaGamma.py Cluster7 Cluster7etaS_df.csv Cluster7_3_3/Selected_variants.csv Cluster7_3_3/Filtered_Tau_starR.csv Cluster7_3_3/Gamma_starR.csv
+python ~/repos/PenrynTutorial/IdentEtaGamma.py Cluster18 Cluster7etaS_df.csv Cluster18_3_3/Selected_variants.csv Cluster18_3_3/Filtered_Tau_starR.csv Cluster18_3_3/Gamma_starR.csv
 ```
