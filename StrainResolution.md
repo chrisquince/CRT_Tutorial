@@ -2,6 +2,18 @@
 
 ## Run the DESMAN pipeline to resolve strains in each high quality bin
 
+Select clusters which are sufficiently good and have enough coverage for strain resolution.
+```
+cd ~/Projects/InfantGut
+python3 ~/bin/CompleteClustersCov.py Concoct/clustering_gt1000_scg.tsv Concoct/clustering_gt1000_cov.csv > Split/Cluster75.txt
+```
+
+There will only be two:
+```
+more Split/Cluster75.txt
+```
+
+
 ### Getting core variant frequencies
 
 Then we select the SCGS for each cluster:
