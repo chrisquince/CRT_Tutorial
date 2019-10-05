@@ -98,7 +98,7 @@ echo $(cat ReadsSub/sample1_R1.fastq |wc -l)/4|bc
 </details>
 
 
-Now we will try a single sample assembly with megahit. Can you assemble the forward and reverse reads from sample 1?
+Now we will try a single sample assembly with megahit. Can you assemble the forward and reverse reads from sample 1 using megahit?
 
 
 <details><summary> Can you assemble the forward and reverse reads from sample 1? </summary>
@@ -172,11 +172,13 @@ Which assembly is bigger?
 
 ## Read mapping
 
-Then cut up contigs:
+Then cut up contigs, why do we do this?
 
 ```bash
 python $CONCOCT/scripts/cut_up_fasta.py -c 10000 -o 0 -m Assembly/final.contigs.fa > Assembly/final_contigs_c10K.fa
 ```
+
+The '$CONCOCT' is a shell variable pointing to some useful programs from the CONCOCT repository.
 
 Having cut-up the contigs the next step is to map all the reads from each sample back onto them. First index the contigs with bwa:
 
@@ -186,10 +188,72 @@ bwa index final_contigs_c10K.fa
 cd ..
 ```
 
-Then perform the actual mapping you may want to put this in a shell script:
+Then I want you to try mapping the reads from the first sample onto the cut up contigs using 'bwa mem' inside a subdirectory Map to 
+produce a sam file 'Map/sample1.sam':
+
+<details><summary>the correct command is:</summary>
+<p>
+
+```
+    mkdir Map
+    bwa mem -t 12 Assembly/final_contigs_c10K.fa ReadsSub/sample1_R1.fastq ReadsSub/sample1_R2.fastq > Map/sample1.sam
+```
+</p>
+</details>
+
+You can look at the sam:
+```
+tail Map/sample1.sam
+```
+
+It is quite a complex [format](https://en.wikipedia.org/wiki/SAM_(file_format))
+
+The sam file is a bit bulky so we never store alignments in this format instead we would convert it into bam. Can you convert this file using 
+'samtools view':
+
+
+<details><summary> Convert sam to bam command</summary>
+<p>
+
+```
+    cd Map
+    samtools view -h -b -S sample1.sam > sample1.ba
+```
+</p>
+</details>
+
+Now we want to get the coverage depth of every cut up contig in this samtool. We will start 
+by selecting just those alignments that actually mapped:
+```
+    samtools view -b -F 4 sample1.bam > sample1.mapped.bam
+```
+
+
+The we sort the mapped bam file:
+```
+samtools sort -m 1000000000 sample1.mapped.bam -o sample1.mapped.sorted.bam 
+```
+
+Now we need to calculate the contig lengths:
+```
+python $DESMAN/scripts/Lengths.py -i ../Assembly/final_contigs_c10K.fa > ../Assembly/Lengths.txt
+```
+
+Finally we get a history of contig coverages:
+```
+bedtools genomecov -ibam sample1.mapped.sorted.bam -g ../Assembly/Lengths.txt > sample1_cov.txt
+```
+
+Can you use a simple awk command to get coverage depth:
+```
+ awk -F"\t" '{l[$1]=l[$1]+($2 *$3);r[$1]=$4} END {for (i in l){print i","(l[i]/r[i])}}' sample1_cov.txt
+```
+
+
+**Do not run this** to run all samples we would place these steps in a shell script:
 
 ```bash
-mkdir Map
+cd ~/Projects/InfantGut
 
 for file in ./ReadsSub/*R1.fastq
 do 
@@ -205,11 +269,9 @@ do
 done
 ```
 
-And calculate coverages:
+And calculate coverages **Do not run this**:
 
 ```
-python $DESMAN/scripts/Lengths.py -i Assembly/final_contigs_c10K.fa > Assembly/Lengths.txt
-
 for file in Map/*.sam
 do
     stub=${file%.sam}
@@ -229,6 +291,12 @@ do
    echo $stub
    awk -F"\t" '{l[$1]=l[$1]+($2 *$3);r[$1]=$4} END {for (i in l){print i","(l[i]/r[i])}}' $i > Map/${stub}_cov.csv
 done
+```
+
+
+
+
+
 
 $DESMAN/scripts/Collate.pl Map > Coverage.csv
 ```
