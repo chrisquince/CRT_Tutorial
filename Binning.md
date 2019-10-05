@@ -438,17 +438,20 @@ Rscript ./ClusterCovNMDS.R
 
 How well does this correlate with time/replicates.
 
+```
+evince ClusterNMDS.pdf 
+```
+
 ![ClusterCov](./Figures/ClusterNMDS.png) 
 
 
 Also plot some time series:
 
 ```
-cd ~/repos
-git clone https://github.com/chrisquince/PenrynTutorial.git
-cd ~/Projects/InfantGut/Concoct
 cp ~/repos/PenrynTutorial/TimeSeries.R .
 cp ~/Data/InfantGut/sharon_mappingR.txt .
+Rscript ./TimeSeries.R
+evince TimeSeries.pdf
 ```
 
 ![TimeSeries](./Figures/TimeSeries.png) 
@@ -487,9 +490,19 @@ CheckM is a very useful 3rd party program for cluster validation...
 
 ```
 cd ~/Projects/InfantGut/Split
-checkm lineage_wf -t 8 -x fa Cluster7 Cluster7_cm
+checkm lineage_wf -t 8 -x fa Cluster14 Cluster14_cm
 ```
 <a name="MAGs"/>
+
+Should something like:
+```
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Bin Id             Marker lineage         # genomes   # markers   # marker sets   0    1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Cluster14   o__Lactobacillales (UID544)      293         475           267        4   465   6   0   0   0       98.69            1.45               0.00          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+```
 
 ## Taxonomic Classification of Contigs
 
