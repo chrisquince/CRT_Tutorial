@@ -320,21 +320,51 @@ $DESMAN/scripts/Collate.pl Map > Coverage.csv
 ## Contig binning
 
 Now we can run CONCOCT:
-```
 
-    mkdir Concoct
+Make a new subfolder within InfantGut called Concoct. Move the Coverage file into this and then convert it from 
+comma seperated to tab separated using 'tr':
+
+<details><summary> Get ready to run Concoct!</summary>
+<p>
+
+```
+     mkdir Concoct
 
     mv Coverage.csv Concoct
 
     cd Concoct
 
     tr "," "\t" < Coverage.csv > Coverage.tsv
+```
+</p>
+</details>
 
+Concoct itself is quite straightforward to run:
+```
     concoct --coverage_file Coverage.tsv --composition_file ../Assembly/final_contigs_c10K.fa -t 12 
 
 ```
 
-Find genes using prodigal:
+Key output is 'clustering_gt1000.csv' which contains bin assignment for every contig:
+```
+head clustering_gt1000.csv
+```
+
+How many contigs were clustered? How many cut up contigs are there in total?
+
+
+<details><summary> How many bins were generated - hint use cut, wc, sort and uniq? </summary>
+<p>
+
+```
+    sed '1d' clustering_gt1000.csv | cut -d"," -f2  | sort | uniq -c | wc
+```
+</p>
+</details>
+
+## Identify MAGs
+
+***Do not run this ***: Find genes using prodigal:
 ```
     cd ..
     
@@ -347,40 +377,50 @@ Find genes using prodigal:
     prodigal -i final_contigs_gt1000_c10K.fa -a final_contigs_gt1000_c10K.faa -d     final_contigs_gt1000_c10K.fna  -f gff -p meta -o final_contigs_gt1000_c10K.gff 
 ```
 
-Assign COGs change the -c flag which sets number of parallel processes appropriately:
+*** Or this *** Assign COGs change the -c flag which sets number of parallel processes appropriately:
 ```
     export COGSDB_DIR=~/Databases/rpsblast_cog_db
     $CONCOCT/scripts/RPSBLAST.sh -f final_contigs_gt1000_c10K.faa -p -c 12 -r 1
 ```
 
+Instead copy in Annotate directory:
+```
+cd ~/Projects/InfantGut
+cp ~/Prerun/Annotate .
+```
+
+
 Now we calculate scg frequencies on the CONCOCT clusters:
 ```
-cd ../Concoct
+cd Concoct
 python $CONCOCT/scripts/COG_table.py -b ../Annotate/final_contigs_gt1000_c10K.out  -m $CONCOCT/scgs/scg_cogs_min0.97_max1.03_unique_genera.txt -c clustering_gt1000.csv  --cdd_cog_file $CONCOCT/scgs/cdd_to_cog.tsv > clustering_gt1000_scg.tsv
 ```
 
-This should result in 5 clusters with 75% single copy copy SCGs:
-
-## Can also run CheckM on individual clusters
-
-CheckM is a very useful 3rd party program for cluster validation...
-
+This should result in 5 MAGs with 75% single copy copy SCGs. Use R to identify them:
 ```
-cd ~/Projects/InfantGut/Split
-checkm lineage_wf -t 8 -x fa Cluster7 Cluster7_cm
+R
+>scg <- read.table('clustering_gt1000_scg.tsv',header=TRUE,row.names=1)
+> scg <- scg[,-1]
+> scg <- scg[,-1]
+> rowSums(scg == 1)/36. > 0.75
+> sum(rowSums(scg == 1)/36. > 0.75)
+>q()
 ```
-<a name="MAGs"/>
 
 ## Metagenome assembled genomes (MAGs)
 
 First let us look at the cluster completeness:
 ```
 $CONCOCT/scripts/COGPlot.R -s clustering_gt1000_scg.tsv -o clustering_gt1000_scg.pdf
+evince clustering_gt1000_scg.pdf
 ```
+
+evince will only work with X windows forwarding enabled.
 
 ![SCGs](./Figures/clustering_gt1000_scg.png) 
 
 Discussion point what is a MAG?
+
 
 Then we calculate coverage of each cluster/MAG in each sample.
 ```
@@ -440,6 +480,16 @@ SplitGenes.pl ../Annotate/final_contigs_gt1000_c10K.genes ../Concoct/clustering_
 SplitFaa.pl ../Annotate/final_contigs_gt1000_c10K.faa ../Concoct/clustering_gt1000.csv
 
 ```
+
+## Can also run CheckM on individual clusters
+
+CheckM is a very useful 3rd party program for cluster validation...
+
+```
+cd ~/Projects/InfantGut/Split
+checkm lineage_wf -t 8 -x fa Cluster7 Cluster7_cm
+```
+<a name="MAGs"/>
 
 ## Taxonomic Classification of Contigs
 
