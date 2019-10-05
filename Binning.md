@@ -283,7 +283,19 @@ done
 
 Why do we use the '&' is the above? How many cores will this script use?
 
-**Do not run this**:
+Instead copy across a prerun directory:
+```
+
+cd ~/Projects/InfantGut
+
+rm -r Map
+
+cp -r ~/Prerun/Map .
+
+```
+
+
+**Do run this**:
 
 ```
 for i in Map/*_cov.txt 
@@ -297,7 +309,7 @@ done
 ```
 
 
-**Do run this**:
+**and this**:
 
 ```
 $DESMAN/scripts/Collate.pl Map > Coverage.csv
