@@ -244,13 +244,13 @@ Finally we get a history of contig coverages:
 bedtools genomecov -ibam sample1.mapped.sorted.bam -g ../Assembly/Lengths.txt > sample1_cov.txt
 ```
 
-Can you use a simple awk command to get coverage depth:
+Can then use a simple awk command to get coverage depth:
 ```
  awk -F"\t" '{l[$1]=l[$1]+($2 *$3);r[$1]=$4} END {for (i in l){print i","(l[i]/r[i])}}' sample1_cov.txt
 ```
 
 
-**Do not run this** to run all samples we would place these steps in a shell script:
+**Do not run this**: to run all samples we would place these steps in a shell script:
 
 ```bash
 cd ~/Projects/InfantGut
@@ -269,7 +269,7 @@ do
 done
 ```
 
-And calculate coverages **Do not run this**:
+**Do not run this**: And calculate coverages:
 
 ```
 for file in Map/*.sam
@@ -280,7 +280,10 @@ do
     (samtools view -h -b -S $file > ${stub}.bam;samtools view -b -F 4 ${stub}.bam > ${stub}.mapped.bam;samtools sort -m 1000000000 ${stub}.mapped.bam -o ${stub}.mapped.sorted.bam; bedtools genomecov -ibam ${stub}.mapped.sorted.bam -g Assembly/Lengths.txt > ${stub}_cov.txt)&
 done
 ```
-Collate coverages together:
+
+Why do we use the '&' is the above? How many cores will this script use?
+
+**Do not run this**:
 
 ```
 for i in Map/*_cov.txt 
@@ -294,10 +297,9 @@ done
 ```
 
 
+**Do run this**:
 
-
-
-
+```
 $DESMAN/scripts/Collate.pl Map > Coverage.csv
 ```
 
