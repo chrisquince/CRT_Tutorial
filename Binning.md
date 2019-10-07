@@ -19,6 +19,31 @@ Login into your VM:
 ssh -Y ubuntu@137.205.69.xxx
 ```
 
+Work in pairs on following machines:
+
+Galway10 - 137.205.69.23
+
+Galway9 - 137.205.69.42	
+
+Galway8	- 137.205.69.135
+	
+Galway7	- 137.205.69.11
+
+Galway6	- 137.205.69.8
+	
+Galway5	- 137.205.69.45
+
+Galway4	- 137.205.69.212
+
+Galway3	- 137.205.69.68
+	
+Galway2	- 137.205.69.144
+
+Galway1	- 137.205.69.50
+
+GalwayMaster - 137.205.69.54
+
+
 We are now going to perform a basic assembly based metagenomics analysis of these same samples. 
 This will involve a collection of different software programs:
 
