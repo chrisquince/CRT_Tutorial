@@ -41,8 +41,6 @@ Galway2	- 137.205.69.144
 
 Galway1	- 137.205.69.50
 
-GalwayMaster - 137.205.69.54
-
 
 We are now going to perform a basic assembly based metagenomics analysis of these same samples. 
 This will involve a collection of different software programs:
