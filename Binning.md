@@ -16,30 +16,8 @@ Assembly based metagenomics represents a complex analysis pathway:
 Login into your VM:
 
 ```
-ssh -Y ubuntu@137.205.69.xxx
+ssh -Y ubuntu@xxx.yyy.zzz.xxx
 ```
-
-Work in pairs on following machines:
-
-Galway10 - 137.205.69.23
-
-Galway9 - 137.205.69.42	
-
-Galway8	- 137.205.69.135
-	
-Galway7	- 137.205.69.11
-
-Galway6	- 137.205.69.8
-	
-Galway5	- 137.205.69.45
-
-Galway4	- 137.205.69.212
-
-Galway3	- 137.205.69.68
-	
-Galway2	- 137.205.69.144
-
-Galway1	- 137.205.69.50
 
 
 We are now going to perform a basic assembly based metagenomics analysis of these same samples. 
@@ -240,7 +218,7 @@ The sam file is a bit bulky so we never store alignments in this format instead 
 
 ```
     cd Map
-    samtools view -h -b -S sample1.sam > sample1.ba
+    samtools view -h -b -S sample1.sam > sample1.bam
 ```
 </p>
 </details>
@@ -387,7 +365,7 @@ How many contigs were clustered? How many cut up contigs are there in total?
 
 ## Identify MAGs
 
-***Do not run this ***: Find genes using prodigal:
+***Do not run this***: Find genes using prodigal:
 ```
     cd ..
     
